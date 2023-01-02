@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MativatorConfig(AppConfig):
+class MotivatorConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mativator'
+    name = 'motivator'

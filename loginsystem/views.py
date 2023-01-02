@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+def index(request):        
+    return render(request, 'index.html')
+
+def login(request):
+    """login view for testing bro"""
+    print(request.POST["username"],request.POST["password"])
+    return render(request,'loginsystem/login.html')

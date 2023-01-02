@@ -1,0 +1,14 @@
+{% extends 'loginsystem/layout.html' %}
+
+
+    
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>wlecome</p><br>
+    name <input name='username'><br>
+    password<input name='password'><br>
+    pasword confirm<input name='password2'><br>
+    <button type="Submit" name='subbtn'>Submit</button>
+</form>
+{% endblock content %}
