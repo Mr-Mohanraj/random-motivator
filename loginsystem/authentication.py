@@ -8,17 +8,18 @@ from .models import User
 
 class JWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        auth = get_authorization_header(request=request).split()
+        try:
+            auth = get_authorization_header(request=request).split()
 
-        if auth and len(auth) == 2:
-            token = auth[1].decode('utf-8')
-            id = decode_access_token(token)
+            if auth and len(auth) == 2:
+                token = auth[1].decode('utf-8')
+                id = decode_access_token(token)
 
-            user = User.objects.get(pk=id)
+                user = User.objects.get(pk=id)
 
-            return (user, None)
-
-        raise exceptions.AuthenticationFailed('Unauthenticated')
+                return (user, None)
+        except Exception as  e:
+            print(e)
 
 
 def create_access_token(id):
@@ -33,7 +34,7 @@ def create_access_token(id):
 
 def decode_access_token(token):
     try:
-        payload = jwt.decode(token, 'access_secret', algorithms='HS256')
+        payload = jwt.decode(token, 'access_secret', algorithm='HS256')
 
         return payload['user_id']
     except:
@@ -50,7 +51,7 @@ def create_refresh_token(id):
 
 def decode_refresh_token(token):
     try:
-        payload = jwt.decode(token, 'refresh_secret', algorithms='HS256')
+        payload = jwt.decode(token, 'refresh_secret', algorithm='HS256')
 
         return payload['user_id']
     except:

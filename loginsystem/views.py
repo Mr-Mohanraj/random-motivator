@@ -10,9 +10,18 @@ from .serializers import UserSerializer
 from django.core.mail import send_mail
 import random
 import string
+from django.shortcuts import render
+from loginsystem.forms import LoginForm, RegisterForm
+from rest_framework import status
 
 
 class RegisterApiView(APIView):
+    def get(self, request):
+        print("data", request.GET)
+        context = {}
+        context['from'] = RegisterForm()
+        return render(request, 'loginsystem/register.html', context)
+    
     def post(self, request):
         data = request.data
 
@@ -27,17 +36,26 @@ class RegisterApiView(APIView):
 
 
 class LoginApiView(APIView):
+    def get(self, request):
+        print("data", request.GET)
+        context = {}
+        context['from'] = LoginForm()
+        return render(request, 'loginsystem/login.html', context)
+    
+    
     def post(self, request):
+        print("data",request.data)
         email = request.data['email']
         password = request.data['password']
 
         user = User.objects.filter(email=email).first()
 
         if user is None:
-            raise exceptions.AuthenticationFailed('Invalid credentials')
+            print("insude the")
+            raise exceptions.AuthenticationFailed(detail=f"Invalid credentials {status.HTTP_401_UNAUTHORIZED}")
 
         if not user.check_password(password):
-            raise exceptions.AuthenticationFailed('Invalid credentials')
+            raise exceptions.AuthenticationFailed('Invalid credentials, check your password')
 
         access_token = create_access_token(user.id)
         refresh_token = create_refresh_token(user.id)
@@ -54,9 +72,10 @@ class LoginApiView(APIView):
 
 
 class UserApiView(APIView):
+    print("inside the user")
     authentication_classes = [JWTAuthentication]
-
     def get(self, request):
+        print(request.user)
         return Response(UserSerializer(request.user).data)
 
 

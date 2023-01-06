@@ -11,7 +11,7 @@ class User(AbstractBaseUser):
         max_length=200, unique=True, null=False, default="newuser")
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['date_of_birth']
+    REQUIRED_FIELDS = []
 
 
 class UserToken(models.Model):
