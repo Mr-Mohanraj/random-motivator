@@ -1,12 +1,10 @@
 from django.urls import path
-from loginsystem.views import RegisterApiView, LoginApiView, ResetAPIView, UserApiView, RefreshAPIVew, ResetAPIView, ForgetAPIView
+from django.contrib.auth import views as auth_views
+from loginsystem import views as user_views
 
-# as_view() indicate the view is a class view
 urlpatterns = [
-    path('register', RegisterApiView.as_view()),
-    path('login', LoginApiView.as_view()),
-    path('user', UserApiView.as_view()),
-    path('refresh', RefreshAPIVew.as_view()),
-    path('reset', ResetAPIView.as_view()),
-    path('forgot', ForgetAPIView.as_view())
+    path('register/', user_views.register, name='register'),
+    path('profile/', user_views.profile, name='profile'),
+    path('login/', auth_views.LoginView.as_view(template_name='loginsystem/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='loginsystem/logout.html'), name='logout'),
 ]
